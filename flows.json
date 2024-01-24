@@ -1,0 +1,233 @@
+[
+    {
+        "id": "94fc9cefc9ca0cf0",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "297034b70f636f78",
+        "type": "buffer-maker",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Creation of the frame",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "name": "item1",
+                "type": "byte",
+                "length": 16,
+                "dataType": "bin",
+                "data": "[83,53,16,1,3,5,3,8,1,62,0,0,0,2,255,2]"
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "x": 620,
+        "y": 200,
+        "wires": [
+            [
+                "8224d2bb0bc54019"
+            ]
+        ]
+    },
+    {
+        "id": "8224d2bb0bc54019",
+        "type": "tcp request",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Sending request",
+        "server": "192.168.0.1",
+        "port": "2000",
+        "out": "char",
+        "ret": "buffer",
+        "splitc": "\\n",
+        "newline": "",
+        "tls": "",
+        "x": 820,
+        "y": 200,
+        "wires": [
+            [
+                "0a70d4d2ea2f6a79"
+            ]
+        ]
+    },
+    {
+        "id": "0a70d4d2ea2f6a79",
+        "type": "buffer-parser",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Reception of the request",
+        "data": "payload",
+        "dataType": "msg",
+        "specification": "spec",
+        "specificationType": "ui",
+        "items": [
+            {
+                "type": "buffer",
+                "name": "Response frame",
+                "offset": 0,
+                "length": 16,
+                "offsetbit": 0,
+                "scale": "1",
+                "mask": ""
+            }
+        ],
+        "swap1": "",
+        "swap2": "",
+        "swap3": "",
+        "swap1Type": "swap",
+        "swap2Type": "swap",
+        "swap3Type": "swap",
+        "msgProperty": "payload",
+        "msgPropertyType": "str",
+        "resultType": "value",
+        "resultTypeType": "return",
+        "multipleResult": false,
+        "fanOutMultipleResult": false,
+        "setTopic": true,
+        "outputs": 1,
+        "x": 1050,
+        "y": 200,
+        "wires": [
+            [
+                "eefa55141c0900a1"
+            ]
+        ]
+    },
+    {
+        "id": "eefa55141c0900a1",
+        "type": "debug",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1230,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "786ebfe4ee01d826",
+        "type": "tcp-client",
+        "z": "94fc9cefc9ca0cf0",
+        "action": "Listen",
+        "actionType": "str",
+        "host": "192.168.0.1",
+        "hostType": "str",
+        "port": "2000",
+        "portType": "str",
+        "datamode": "single",
+        "datatype": "buffer",
+        "newline": "",
+        "xmlAttrkey": "$",
+        "xmlCharkey": "_",
+        "xmlStrip": false,
+        "xmlArray": false,
+        "xmlNormalizeTags": false,
+        "xmlNormalize": false,
+        "write": "",
+        "writeType": "str",
+        "topic": "",
+        "name": "Connection to the port 2000",
+        "debug": "none",
+        "x": 360,
+        "y": 200,
+        "wires": [
+            [
+                "297034b70f636f78"
+            ]
+        ]
+    },
+    {
+        "id": "4e7c6b47a29342e7",
+        "type": "inject",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Frame",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[83,53,16,1,3,5,3,8,1,62,0,0,0,2,255,2]",
+        "payloadType": "bin",
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [
+                "786ebfe4ee01d826"
+            ]
+        ]
+    },
+    {
+        "id": "de3bd3ac68455563",
+        "type": "inject",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "True",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 150,
+        "y": 260,
+        "wires": [
+            [
+                "786ebfe4ee01d826"
+            ]
+        ]
+    },
+    {
+        "id": "b6391ae377415d30",
+        "type": "comment",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Sending a Fetch/Write request for PLC",
+        "info": "",
+        "x": 230,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "bbdfa812e241af6e",
+        "type": "comment",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Launching with a boolean or with the frame ?",
+        "info": "",
+        "x": 250,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a0293d38706c9a03",
+        "type": "comment",
+        "z": "94fc9cefc9ca0cf0",
+        "name": "Creation of the frame maybe after the connection to the PLC ?",
+        "info": "",
+        "x": 620,
+        "y": 160,
+        "wires": []
+    }
+]
